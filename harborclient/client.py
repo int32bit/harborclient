@@ -22,6 +22,8 @@ from harborclient import utils
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+import requests.packages.urllib3
+requests.packages.urllib3.disable_warnings()
 
 class HTTPClient(object):
     USER_AGENT = 'python-harborclient'

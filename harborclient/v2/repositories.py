@@ -2,6 +2,12 @@ from harborclient import base
 
 
 class RepositoryManager(base.Manager):
+    def is_name(self, key):
+        if key.isdigit():
+            return False
+        else:
+            return True
+
     def get(self, id):
         """Get a Repository."""
         return self._get("/repositories/%s" % id)
@@ -14,7 +20,7 @@ class RepositoryManager(base.Manager):
     def delete_repository(self, repo_name):
         """Delete the repository."""
         return self.api.client.delete(
-            "/repositories/%s" % repo_name)
+           "/repositories/%s" % repo_name)
 
     def list_tags(self, repo_name):
         """Get the tag of the repository."""
@@ -23,7 +29,7 @@ class RepositoryManager(base.Manager):
 
     def delete_tags(self, repo_name, tag_name):
         """Delete the tag of the repository."""
-        return self.api.client.delete(
+        return self._delete(
             "/repositories/%s/tags/%s" % (repo_name, tag_name))
 
     def get_manifests(self, repo_name, tag):
