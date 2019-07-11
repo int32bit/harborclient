@@ -356,15 +356,18 @@ def do_list(cs, args):
     help="will only print what would have been deleted")
 def do_repository_delete(cs, args):
     """Delete repository"""
-    # list all the repositories to delete
-    repositories = cs.repositories.list(cs.client.project)
-    for repo in repositories:
-        if re.match(args.repository, repo['name']):
-            if args.dryrun:
-                print("Would have deleted : %s" % repo['name'])
-            else:
-                cs.repositories.delete_repository(repo['name'])
-                print("Repository %s deleted" % repo['name'])
+    key = args.repository
+    if cs.repositories.is_name(key):
+        try:
+            cs.repositories.delete_repository(key)
+            print("Delete Repository '%s' successfully." % key)
+            return 0
+        except exp.NotFound:
+            print("Repository '%s' not Found." % args.repository)
+            return 1
+    else:
+        print("Repository name is needed.")
+        return 1
 
 
 @utils.arg('repository', metavar='<repository>', help='Name of repository.')
